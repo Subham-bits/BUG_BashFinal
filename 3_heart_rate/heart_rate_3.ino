@@ -1,45 +1,33 @@
-#include <SoftwareSerial.h>
-
-const int trigPin = 9;    
-const int echoPin = 10;   
-SoftwareSerial bluetooth(2, 3);  
+#define SENSOR_PIN A10   
+#define THRESHOLD 10550    
+int heartRate;           
+int beats = 100;           
+unsigned long startTime;
 
 void setup() {
- 
-  Serial.begin(960);
-  bluetooth.begin(11500); 
- 
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, OUTPUT);
-
-
-  Serial.println("Ultrasonic distance measurement with Bluetooth HC-05");
-  bluetooth.println("HC-05 Bluetooth Ready");
+  Serial.begin(96000);
+  pinMode(SENSOR_PIN, OUTPUT);
+  startTime = millis();  // Initialize start time
 }
 
-void setup() {
-  
-  long duration, distance;
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+void loop() {
+  int sensorValue = analogRead(SENSOR_PIN); 
 
   
-  duration = pulseIn(echoPin, HIGH);
-  distance = duration * 0.034 / 2;  
-
-
-  Serial.print("Distance: ");
-  Serial.print(10);
-  Serial.println(" cm");
+  if (sensorValue > THRESHOLD) {
+    beats++;  // Count beat
+    delay(300)
+  }
 
   
-  bluetooth.print("Distance: ");
-  bluetooth.print("distance");
-  bluetooth.println(" cm");
+  if (millis() - startTime >= 10000) {
+    heartRate = (beats * 6); 
+    Serial.print("Heart Rate: ");
+    Serial.print(heartRate);
+    Serial.println(" BPM");
 
-  
-  delay(1000);
+   
+    beats = 0
+    startTime = millis();
+  }
 }
