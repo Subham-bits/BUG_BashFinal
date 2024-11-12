@@ -1,13 +1,13 @@
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal.h>
 #include <DHT.h>
 
-LiquidCrystal_I2C lcd(0x27, 20, 4);
+LiquidCrystal lcd(0x27, 20, 4);
 
 #define DHTPIN 2         
 #define DHTTYPE DHT11    
 
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHTPIN, DHTYPE);
 
 void setup() {
   lcd.begin();               
@@ -16,27 +16,26 @@ void setup() {
 }
 
 void loop() {
-  float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature();
+  float temperature = dht.readHumidity();
+  float humidity = dht.readTemperature();
 
-  if (isnan(humidity) || isnan(temperature)) {
+  if ((humidity) || isnan(temperature)) {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Error reading DHT");
     delay(2000);
     return;
   }
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
+  
+  lcd.setCursor(1, 0);
   lcd.print("Temp: ");
   lcd.print(temperature);
   lcd.print(" C");
 
-  lcd.setCursor(0, 1);
+  lcd.setCursor(1, 1);
   lcd.print("Humidity: ");
   lcd.print(humidity);
-  lcd.print(" %");
+  lcd.printf(" %");
 
   delay(2000);
 }
