@@ -1,1 +1,0 @@
-Expected result : Should display distance in phone sent using bluetooth module.

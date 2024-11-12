@@ -1,1 +1,0 @@
-Expected Result : If distance is within 10cm the the servo moves by 90 degrees.
